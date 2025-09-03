@@ -5,306 +5,834 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>BeauteOS Pro - 美容サロン向けAIサポートシステム</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script>
-    window.tailwind = { 
-      theme: { 
-        extend: {
-          colors: {
-            primary: { 
-              50:"#eff6ff", 100:"#dbeafe", 200:"#bfdbfe", 300:"#93c5fd", 
-              400:"#60a5fa", 500:"#3b82f6", 600:"#2563eb", 700:"#1d4ed8" 
-            },
-            control:"#dc2626", express:"#f59e0b", analytic:"#2563eb", support:"#059669"
-          }
-        }
-      }
-    };
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    :root { 
-      --shadow: 0 1px 2px rgba(0,0,0,.06),0 2px 8px rgba(0,0,0,.06); 
-    }
-    html,body { height:100%; background:#f8fafc; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body { 
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial; 
+      font-family: 'Noto Sans JP', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
     }
-    .card { 
-      background:#fff; border:1px solid #e5e7eb; border-radius:12px; 
-      box-shadow: var(--shadow); 
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
     }
-    .navbtn.active { 
-      background:#eef2ff; color:#1d4ed8; border-color:#c7d2fe; 
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
     }
-    .badge { 
-      border-radius:9999px; padding:.25rem .5rem; 
-      font-size:.75rem; font-weight:600; 
+    .btn {
+      background: #3b82f6;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s;
+      display: inline-block;
     }
-    .type-ctrl { background:#fee2e2; color:#b91c1c; } 
-    .type-expr { background:#fffbeb; color:#b45309; }
-    .type-anal { background:#eff6ff; color:#1d4ed8; } 
-    .type-supp { background:#ecfdf5; color:#047857; }
-    .progress { 
-      height:8px; background:#e5e7eb; border-radius:9999px; overflow:hidden; 
+    .btn:hover {
+      background: #2563eb;
+      transform: translateY(-2px);
     }
-    .progress > div { height:100%; background:#2563eb; transition: width 0.3s ease; }
-    .chip { 
-      border:1px solid #e5e7eb; border-radius:9999px; 
-      padding:.25rem .5rem; font-size:.75rem; 
+    .btn-danger {
+      background: #ef4444;
     }
-    .kbd { 
-      border:1px solid #e2e8f0; border-bottom-width:3px; 
-      padding:.15rem .4rem; border-radius:6px; font-size:.75rem; background:#fff; 
+    .btn-danger:hover {
+      background: #dc2626;
     }
-    .meter { height:8px; display:flex; gap:2px; }
-    .meter span { 
-      flex:1; background:#e5e7eb; border-radius:2px; 
-      transition:height .12s; 
+    .type-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
     }
-    .fade-in { animation: fadeIn 0.3s ease-in; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    .slide-in { animation: slideIn 0.3s ease-out; }
-    @keyframes slideIn { from { transform: translateX(-20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    .type-control { background: #fee2e2; color: #dc2626; }
+    .type-express { background: #fef3c7; color: #f59e0b; }
+    .type-analytic { background: #dbeafe; color: #3b82f6; }
+    .type-support { background: #d1fae5; color: #059669; }
+    .nav-item {
+      padding: 12px 20px;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.3s;
+      display: inline-block;
+      margin: 5px;
+      background: rgba(255,255,255,0.1);
+    }
+    .nav-item:hover {
+      background: rgba(255,255,255,0.2);
+    }
+    .nav-item.active {
+      background: rgba(255,255,255,0.3);
+      font-weight: 600;
+    }
+    .progress-bar {
+      height: 8px;
+      background: #e5e7eb;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: #3b82f6;
+      transition: width 0.5s ease;
+    }
+    .fade-in {
+      animation: fadeIn 0.5s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .section {
+      display: none;
+    }
+    .section.active {
+      display: block;
+    }
+    .diagnosis-option {
+      background: white;
+      border: 2px solid #e5e7eb;
+      padding: 16px;
+      border-radius: 8px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.3s;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+    .diagnosis-option:hover {
+      border-color: #3b82f6;
+      background: #eff6ff;
+    }
+    .wave-bar {
+      width: 4px;
+      background: #3b82f6;
+      border-radius: 2px;
+      margin: 0 2px;
+      animation: wave 0.5s infinite;
+    }
+    @keyframes wave {
+      0%, 100% { height: 20px; }
+      50% { height: 40px; }
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th {
+      text-align: left;
+      padding: 12px;
+      border-bottom: 2px solid #e5e7eb;
+      font-weight: 600;
+    }
+    td {
+      padding: 12px;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    .customer-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .message-preview {
+      background: #f9fafb;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
   </style>
 </head>
-<body class="text-gray-900">
-  <div class="flex h-screen">
-    <!-- Sidebar -->
-    <aside class="w-[84px] md:w-[280px] border-r border-gray-200 bg-white flex flex-col">
-      <div class="px-4 py-4 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-extrabold">B</div>
-        <div class="hidden md:block">
-          <div class="text-sm text-gray-900 font-semibold">BeauteOS Pro</div>
-          <div class="text-xs text-gray-400">HPB連携サロンAI</div>
+<body>
+  <div class="container">
+    <!-- ヘッダー -->
+    <div class="card fade-in" style="background: rgba(255,255,255,0.95);">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+        <div>
+          <h1 style="font-size: 28px; font-weight: 700; color: #1f2937;">🎨 BeauteOS Pro</h1>
+          <p style="color: #6b7280; margin-top: 4px;">美容サロン向けAIサポートシステム - デモ版</p>
+        </div>
+        <div style="text-align: right;">
+          <p style="color: #6b7280; font-size: 14px;">ログイン: 佐藤店長</p>
+          <p style="color: #3b82f6; font-size: 14px;">2025年9月3日（火）</p>
         </div>
       </div>
-      <nav class="px-2 md:px-3 pt-2 space-y-2">
-        <button data-route="dashboard" class="navbtn active w-full flex items-center gap-3 px-3 py-3 rounded-lg border border-transparent hover:bg-gray-50 transition-colors">
-          <span class="w-6 text-center">📊</span><span class="hidden md:block">ダッシュボード</span>
-        </button>
-        <button data-route="schedule" class="navbtn w-full flex items-center gap-3 px-3 py-3 rounded-lg border border-transparent hover:bg-gray-50 transition-colors">
-          <span class="w-6 text-center">🗓️</span><span class="hidden md:block">本日の予約</span>
-        </button>
-        <button data-route="diagnosis" class="navbtn w-full flex items-center gap-3 px-3 py-3 rounded-lg border border-transparent hover:bg-gray-50 transition-colors">
-          <span class="w-6 text-center">🧭</span><span class="hidden md:block">ソーシャルタイプ診断</span>
-        </button>
-        <button data-route="recorder" class="navbtn w-full flex items-center gap-3 px-3 py-3 rounded-lg border border-transparent hover:bg-gray-50 transition-colors">
-          <span class="w-6 text-center">🎙️</span><span class="hidden md:block">録音/カルテ化</span>
-        </button>
-        <button data-route="customers" class="navbtn w-full flex items-center gap-3 px-3 py-3 rounded-lg border border-transparent hover:bg-gray-50 transition-colors">
-          <span class="w-6 text-center">👤</span><span class="hidden md:block">顧客管理</span>
-        </button>
-        <button data-route="messages" class="navbtn w-full flex items-center gap-3 px-3 py-3 rounded-lg border border-transparent hover:bg-gray-50 transition-colors">
-          <span class="w-6 text-center">💬</span><span class="hidden md:block">メッセージ/クーポン</span>
-        </button>
-        <button data-route="analytics" class="navbtn w-full flex items-center gap-3 px-3 py-3 rounded-lg border border-transparent hover:bg-gray-50 transition-colors">
-          <span class="w-6 text-center">📈</span><span class="hidden md:block">経営分析</span>
-        </button>
-        <button data-route="consent" class="navbtn w-full flex items-center gap-3 px-3 py-3 rounded-lg border border-transparent hover:bg-gray-50 transition-colors">
-          <span class="w-6 text-center">✅</span><span class="hidden md:block">同意管理</span>
-        </button>
-      </nav>
-      <div class="mt-auto p-3">
-        <div class="card p-3 flex items-center gap-3">
-          <div class="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center">🧑‍💼</div>
-          <div class="hidden md:block">
-            <div class="text-sm font-semibold">佐藤 店長</div>
-            <div class="text-xs text-gray-500">恵比寿店</div>
+    </div>
+
+    <!-- ナビゲーション -->
+    <div class="card fade-in" style="background: rgba(255,255,255,0.95); animation-delay: 0.1s;">
+      <div id="navigation" style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <div class="nav-item active" data-section="dashboard">📊 ダッシュボード</div>
+        <div class="nav-item" data-section="diagnosis">🎯 ソーシャルタイプ診断</div>
+        <div class="nav-item" data-section="recording">🎤 録音・カルテ化</div>
+        <div class="nav-item" data-section="customers">👥 顧客管理</div>
+        <div class="nav-item" data-section="messages">💬 メッセージ</div>
+      </div>
+    </div>
+
+    <!-- ダッシュボードセクション -->
+    <div id="dashboard" class="section active">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+        <div class="card fade-in" style="animation-delay: 0.2s;">
+          <h3 style="color: #6b7280; font-size: 14px; margin-bottom: 8px;">今月の再来率</h3>
+          <div style="font-size: 36px; font-weight: 700; color: #1f2937;">78.5%</div>
+          <div style="color: #10b981; font-size: 14px; margin-top: 4px;">↑ 前月比 +12.3%</div>
+          <div class="progress-bar" style="margin-top: 12px;">
+            <div class="progress-fill" style="width: 78.5%;"></div>
+          </div>
+        </div>
+        
+        <div class="card fade-in" style="animation-delay: 0.3s;">
+          <h3 style="color: #6b7280; font-size: 14px; margin-bottom: 8px;">平均客単価</h3>
+          <div style="font-size: 36px; font-weight: 700; color: #1f2937;">¥8,420</div>
+          <div style="color: #10b981; font-size: 14px; margin-top: 4px;">↑ 前月比 +5.7%</div>
+          <div class="progress-bar" style="margin-top: 12px;">
+            <div class="progress-fill" style="width: 65%;"></div>
+          </div>
+        </div>
+        
+        <div class="card fade-in" style="animation-delay: 0.4s;">
+          <h3 style="color: #6b7280; font-size: 14px; margin-bottom: 8px;">失客リスク顧客</h3>
+          <div style="font-size: 36px; font-weight: 700; color: #1f2937;">23名</div>
+          <div style="color: #f59e0b; font-size: 14px; margin-top: 4px;">⚠️ フォロー推奨</div>
+          <div class="progress-bar" style="margin-top: 12px;">
+            <div class="progress-fill" style="width: 30%; background: #f59e0b;"></div>
           </div>
         </div>
       </div>
-    </aside>
 
-    <!-- Main -->
-    <main class="flex-1 overflow-y-auto">
-      <header class="sticky top-0 z-10 bg-white/70 backdrop-blur border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          <div class="text-lg font-semibold">今日も最高の接客を。</div>
-          <div class="flex items-center gap-3 text-sm text-gray-600">
-            <span class="hidden md:inline">ショートカット: <span class="kbd">G</span>で検索、<span class="kbd">/</span>でナビ</span>
-            <div class="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded-full">
-              2025年9月3日（火）
+      <!-- 本日の予約 -->
+      <div class="card fade-in" style="animation-delay: 0.5s;">
+        <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">📅 本日の予約</h2>
+        <div style="overflow-x: auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>時間</th>
+                <th>お客様</th>
+                <th>タイプ</th>
+                <th>メニュー</th>
+                <th>アクション</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>10:00</td>
+                <td>田中 さくら様</td>
+                <td><span class="type-badge type-support">♥ サポート型</span></td>
+                <td>カット・カラー</td>
+                <td><button class="btn" onclick="goToDiagnosis()">詳細</button></td>
+              </tr>
+              <tr>
+                <td>11:30</td>
+                <td>佐藤 太郎様</td>
+                <td><span class="type-badge type-control">⚡ コントロール型</span></td>
+                <td>カット</td>
+                <td><button class="btn" onclick="goToDiagnosis()">詳細</button></td>
+              </tr>
+              <tr>
+                <td>13:00</td>
+                <td>鈴木 花様</td>
+                <td><span class="type-badge type-express">⭐ 表現型</span></td>
+                <td>カラー・トリートメント</td>
+                <td><button class="btn" onclick="goToDiagnosis()">詳細</button></td>
+              </tr>
+              <tr>
+                <td>15:00</td>
+                <td>高橋 陸様</td>
+                <td><span class="type-badge type-analytic">📊 分析型</span></td>
+                <td>パーマ</td>
+                <td><button class="btn" onclick="goToDiagnosis()">詳細</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- AI提案 -->
+      <div class="card fade-in" style="animation-delay: 0.6s;">
+        <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">💡 AI提案</h2>
+        <div style="background: #fef3c7; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+          <p style="color: #92400e;">⚠️ 3ヶ月未来店の顧客が23名います。フォローメッセージの送信を推奨します。</p>
+        </div>
+        <div style="background: #dbeafe; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+          <p style="color: #1e40af;">📈 表現型顧客の再来率が87%と高水準。SNS投稿をさらに強化しましょう。</p>
+        </div>
+        <div style="background: #d1fae5; border-radius: 8px; padding: 16px;">
+          <p style="color: #064e3b;">🎯 来週の天候不良予報。平日限定クーポンの配信を検討してください。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ソーシャルタイプ診断セクション -->
+    <div id="diagnosis" class="section">
+      <div class="card fade-in">
+        <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 20px;">🎯 ソーシャルタイプ診断</h2>
+        
+        <div id="question-container">
+          <div style="margin-bottom: 20px;">
+            <div class="progress-bar">
+              <div class="progress-fill" id="diagnosis-progress" style="width: 33%;"></div>
+            </div>
+            <p style="color: #6b7280; margin-top: 8px;">質問 <span id="question-number">1</span> / 3</p>
+          </div>
+
+          <div id="question-1" class="question-panel">
+            <h3 style="font-size: 18px; margin-bottom: 16px;">今日の施術で最も重視したいことは？</h3>
+            <div>
+              <button class="diagnosis-option" onclick="answerQuestion(1, 'control')">
+                ⚡ 効率的で確実な仕上がり。時間通りに希望通りに完成させてほしい
+              </button>
+              <button class="diagnosis-option" onclick="answerQuestion(1, 'express')">
+                ⭐ 最新トレンドを取り入れた、自分らしい個性的なスタイル
+              </button>
+              <button class="diagnosis-option" onclick="answerQuestion(1, 'support')">
+                ♥ 髪に優しく、安心できる施術。リラックスして過ごしたい
+              </button>
+              <button class="diagnosis-option" onclick="answerQuestion(1, 'analytic')">
+                📊 なぜその施術が良いのか、根拠や理由を理解してから決めたい
+              </button>
+            </div>
+          </div>
+
+          <div id="question-2" class="question-panel" style="display: none;">
+            <h3 style="font-size: 18px; margin-bottom: 16px;">美容師との会話はどのスタイルが心地よい？</h3>
+            <div>
+              <button class="diagnosis-option" onclick="answerQuestion(2, 'control')">
+                ⚡ 要点を簡潔に話し、効率的に施術を進めたい
+              </button>
+              <button class="diagnosis-option" onclick="answerQuestion(2, 'express')">
+                ⭐ 楽しい話題で盛り上がり、会話も含めて美容室時間を楽しみたい
+              </button>
+              <button class="diagnosis-option" onclick="answerQuestion(2, 'support')">
+                ♥ 優しい雰囲気で、不安なことも気軽に相談できる関係でいたい
+              </button>
+              <button class="diagnosis-option" onclick="answerQuestion(2, 'analytic')">
+                📊 施術の理由や効果について、詳しく説明してもらいたい
+              </button>
+            </div>
+          </div>
+
+          <div id="question-3" class="question-panel" style="display: none;">
+            <h3 style="font-size: 18px; margin-bottom: 16px;">新しいスタイルや提案をされた時の反応は？</h3>
+            <div>
+              <button class="diagnosis-option" onclick="answerQuestion(3, 'control')">
+                ⚡ メリットが明確なら、迅速に判断して試してみる
+              </button>
+              <button class="diagnosis-option" onclick="answerQuestion(3, 'express')">
+                ⭐ 面白そう！流行っているなら挑戦してみたい
+              </button>
+              <button class="diagnosis-option" onclick="answerQuestion(3, 'support')">
+                ♥ 少し不安なので、小さな変化から始めて様子を見たい
+              </button>
+              <button class="diagnosis-option" onclick="answerQuestion(3, 'analytic')">
+                📊 どんな変化で、なぜ私に合うのか詳しく聞いてから判断したい
+              </button>
             </div>
           </div>
         </div>
-      </header>
 
-      <div class="max-w-7xl mx-auto p-4 md:p-6 space-y-8">
-        <!-- Dashboard -->
-        <section data-view="dashboard" class="space-y-6">
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="card p-5 hover:shadow-lg transition-shadow">
-              <div class="flex items-center justify-between">
-                <div class="text-sm text-gray-500">今月再来率</div>
-                <div class="text-emerald-500">📈</div>
-              </div>
-              <div class="text-3xl font-bold mt-1">78.5%</div>
-              <div class="text-emerald-600 text-sm mt-1">+12.3%</div>
-              <div class="progress mt-4"><div style="width:78%"></div></div>
-            </div>
-            <div class="card p-5 hover:shadow-lg transition-shadow">
-              <div class="flex items-center justify-between">
-                <div class="text-sm text-gray-500">平均客単価</div>
-                <div class="text-blue-500">💰</div>
-              </div>
-              <div class="text-3xl font-bold mt-1">¥8,420</div>
-              <div class="text-emerald-600 text-sm mt-1">+5.7%</div>
-              <div class="progress mt-4"><div style="width:64%"></div></div>
-            </div>
-            <div class="card p-5 hover:shadow-lg transition-shadow">
-              <div class="flex items-center justify-between">
-                <div class="text-sm text-gray-500">失客リスク</div>
-                <div class="text-amber-500">⚠️</div>
-              </div>
-              <div class="text-3xl font-bold mt-1">23名</div>
-              <div class="text-amber-600 text-sm mt-1">-8名</div>
-              <div class="progress mt-4"><div style="width:40%"></div></div>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div class="card p-5">
-              <div class="flex items-center justify-between mb-4">
-                <div class="font-semibold">本日の予約</div>
-                <button class="text-sm text-blue-600 hover:underline" data-route-jump="schedule">一覧へ</button>
-              </div>
-              <div id="todayList" class="space-y-3"></div>
-            </div>
-            <div class="card p-5">
-              <div class="font-semibold mb-2">アラート & AI提案</div>
-              <ul class="space-y-2 text-sm">
-                <li class="flex items-center gap-2 p-2 bg-amber-50 rounded-lg">
-                  <span>⚠️</span> 
-                  <span>3ヶ月未来店の顧客が <strong>23名</strong> います。フォローを提案します。</span>
-                </li>
-                <li class="flex items-center gap-2 p-2 bg-blue-50 rounded-lg">
-                  <span>💡</span> 
-                  <span>来週の曇天予報で平日集客が弱い見込み。トリートメント10%クーポンを推奨。</span>
-                </li>
-                <li class="flex items-center gap-2 p-2 bg-green-50 rounded-lg">
-                  <span>🎯</span> 
-                  <span>表現型顧客の再来率が87%と高水準。SNS投稿をさらに強化しましょう。</span>
-                </li>
+        <div id="diagnosis-result" style="display: none;">
+          <div style="text-align: center; padding: 40px 0;">
+            <div style="font-size: 64px; margin-bottom: 20px;" id="result-icon">♥</div>
+            <h3 style="font-size: 28px; font-weight: 700; margin-bottom: 12px;" id="result-type">サポート型</h3>
+            <p style="color: #6b7280; margin-bottom: 24px;" id="result-description">安心感・信頼を重視するタイプ</p>
+            
+            <div style="background: #f9fafb; border-radius: 8px; padding: 20px; margin: 20px 0; text-align: left;">
+              <h4 style="font-weight: 600; margin-bottom: 12px;">💡 このタイプの特徴</h4>
+              <ul style="color: #4b5563; line-height: 1.8;" id="result-traits">
+                <li>✓ 信頼関係を大切にする</li>
+                <li>✓ 急な変化を避ける傾向</li>
+                <li>✓ 優しい対応を好む</li>
+                <li>✓ 感情面への配慮を重視</li>
               </ul>
             </div>
+
+            <div style="background: #ecfdf5; border-radius: 8px; padding: 20px; margin: 20px 0; text-align: left;">
+              <h4 style="font-weight: 600; margin-bottom: 12px;">💬 推奨する会話例</h4>
+              <p style="color: #065f46;" id="result-conversation">
+                「この色だと柔らかい印象になりますよ。不安なことがあれば何でも仰ってくださいね」
+              </p>
+            </div>
+
+            <div style="background: #fee2e2; border-radius: 8px; padding: 20px; margin: 20px 0; text-align: left;">
+              <h4 style="font-weight: 600; margin-bottom: 12px;">⚠️ 避けるべき対応</h4>
+              <ul style="color: #991b1b;" id="result-avoid">
+                <li>• 急な変化を促す提案</li>
+                <li>• 不安を煽る言葉</li>
+                <li>• 冷たい対応</li>
+              </ul>
+            </div>
+
+            <button class="btn" onclick="saveDiagnosis()" style="margin-right: 10px;">カルテに保存</button>
+            <button class="btn" onclick="resetDiagnosis()" style="background: #6b7280;">もう一度診断</button>
           </div>
-        </section>
-
-        <!-- 他のセクション（診断、録音、顧客管理等）のHTMLコードが続く... -->
-        <!-- 簡潔性のため、主要部分のみ表示 -->
-
+        </div>
       </div>
-    </main>
+    </div>
+
+    <!-- 録音・カルテ化セクション -->
+    <div id="recording" class="section">
+      <div class="card fade-in">
+        <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 20px;">🎤 録音・AI自動カルテ化</h2>
+        
+        <div style="text-align: center; padding: 40px 0;">
+          <div id="recording-status" style="margin-bottom: 30px;">
+            <div style="font-size: 48px; margin-bottom: 20px;" class="pulse">🎙️</div>
+            <p style="font-size: 18px; color: #6b7280;">録音準備完了</p>
+            <p style="font-size: 14px; color: #9ca3af; margin-top: 8px;">カウンセリング内容を録音し、AIが自動でカルテ化します</p>
+          </div>
+
+          <div id="recording-wave" style="display: none; margin: 30px 0;">
+            <div style="display: flex; justify-content: center; align-items: center; height: 60px;">
+              <div class="wave-bar" style="animation-delay: 0s;"></div>
+              <div class="wave-bar" style="animation-delay: 0.1s;"></div>
+              <div class="wave-bar" style="animation-delay: 0.2s;"></div>
+              <div class="wave-bar" style="animation-delay: 0.3s;"></div>
+              <div class="wave-bar" style="animation-delay: 0.4s;"></div>
+              <div class="wave-bar" style="animation-delay: 0.5s;"></div>
+              <div class="wave-bar" style="animation-delay: 0.6s;"></div>
+            </div>
+            <p style="color: #ef4444; font-weight: 600; font-size: 18px;">● 録音中... <span id="recording-time">00:00</span></p>
+            <p style="color: #6b7280; font-size: 14px; margin-top: 8px;">音声を検知すると自動で録音、無音時は一時停止します</p>
+          </div>
+
+          <div style="margin: 30px 0;">
+            <button id="record-btn" class="btn" onclick="toggleRecording()" style="font-size: 18px; padding: 16px 32px;">
+              録音開始
+            </button>
+            <button class="btn" onclick="pauseRecording()" style="margin-left: 10px; background: #6b7280;">
+              シャンプー中
+            </button>
+          </div>
+
+          <div id="ai-analysis" style="display: none; margin-top: 30px; text-align: left; max-width: 600px; margin-left: auto; margin-right: auto;">
+            <h3 style="font-weight: 600; margin-bottom: 12px;">🤖 AI分析結果</h3>
+            <div style="background: #f9fafb; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+              <p style="margin-bottom: 12px;"><strong>検出されたキーワード:</strong></p>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+                <span style="background: #dbeafe; color: #1e40af; padding: 4px 12px; border-radius: 20px; font-size: 14px;">ダメージケア</span>
+                <span style="background: #fce7f3; color: #9f1239; padding: 4px 12px; border-radius: 20px; font-size: 14px;">朝のセット時間</span>
+                <span style="background: #dcfce7; color: #14532d; padding: 4px 12px; border-radius: 20px; font-size: 14px;">優しい成分</span>
+                <span style="background: #fef3c7; color: #78350f; padding: 4px 12px; border-radius: 20px; font-size: 14px;">ボリューム</span>
+              </div>
+              <p style="margin-bottom: 8px;"><strong>お客様の悩み:</strong></p>
+              <p style="color: #4b5563; margin-bottom: 12px;">髪のダメージが気になっており、朝のセット時間を短縮したい。優しい成分でケアしたい。</p>
+              <p style="margin-bottom: 8px;"><strong>推奨施術:</strong></p>
+              <p style="color: #059669;">トリートメント重視のカラーリング + ホームケア商品の提案</p>
+            </div>
+            <button class="btn" onclick="saveToKarte()">カルテに保存</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 顧客管理セクション -->
+    <div id="customers" class="section">
+      <div class="card fade-in">
+        <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 20px;">👥 顧客管理</h2>
+        
+        <div style="margin-bottom: 20px;">
+          <input type="text" placeholder="顧客名で検索..." onkeyup="searchCustomers(this.value)">
+        </div>
+
+        <div id="customer-list">
+          <div class="customer-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h3 style="font-weight: 600; font-size: 18px;">田中 さくら様</h3>
+                <p style="color: #6b7280; font-size: 14px; margin: 4px 0;">最終来店: 2025/08/10 | 来店周期: 5週間</p>
+                <p style="color: #6b7280; font-size: 14px;">📱 090-1111-2222</p>
+                <div style="margin-top: 8px;">
+                  <span class="type-badge type-support">♥ サポート型</span>
+                  <span style="background: #fee2e2; color: #dc2626; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-left: 8px;">要フォロー</span>
+                </div>
+              </div>
+              <button class="btn" onclick="showCustomerDetail('田中さくら')">詳細</button>
+            </div>
+          </div>
+
+          <div class="customer-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h3 style="font-weight: 600; font-size: 18px;">佐藤 太郎様</h3>
+                <p style="color: #6b7280; font-size: 14px; margin: 4px 0;">最終来店: 2025/08/22 | 来店周期: 4週間</p>
+                <p style="color: #6b7280; font-size: 14px;">📱 090-3333-4444</p>
+                <div style="margin-top: 8px;">
+                  <span class="type-badge type-control">⚡ コントロール型</span>
+                </div>
+              </div>
+              <button class="btn" onclick="showCustomerDetail('佐藤太郎')">詳細</button>
+            </div>
+          </div>
+
+          <div class="customer-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h3 style="font-weight: 600; font-size: 18px;">鈴木 花様</h3>
+                <p style="color: #6b7280; font-size: 14px; margin: 4px 0;">最終来店: 2025/08/28 | 来店周期: 6週間</p>
+                <p style="color: #6b7280; font-size: 14px;">📱 080-5555-6666</p>
+                <div style="margin-top: 8px;">
+                  <span class="type-badge type-express">⭐ 表現型</span>
+                </div>
+              </div>
+              <button class="btn" onclick="showCustomerDetail('鈴木花')">詳細</button>
+            </div>
+          </div>
+
+          <div class="customer-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h3 style="font-weight: 600; font-size: 18px;">高橋 陸様</h3>
+                <p style="color: #6b7280; font-size: 14px; margin: 4px 0;">最終来店: 2025/07/30 | 来店周期: 8週間</p>
+                <p style="color: #6b7280; font-size: 14px;">📱 070-7777-8888</p>
+                <div style="margin-top: 8px;">
+                  <span class="type-badge type-analytic">📊 分析型</span>
+                  <span style="background: #fef3c7; color: #f59e0b; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-left: 8px;">失客リスク</span>
+                </div>
+              </div>
+              <button class="btn" onclick="showCustomerDetail('高橋陸')">詳細</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- メッセージセクション -->
+    <div id="messages" class="section">
+      <div class="card fade-in">
+        <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 20px;">💬 メッセージ・クーポン配信</h2>
+        
+        <div style="background: #fef3c7; border: 1px solid #fbbf24; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+          <p style="color: #92400e; font-weight: 600;">⚠️ 23名の失客リスク顧客へのフォローメッセージを作成しました</p>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <h3 style="font-weight: 600; margin-bottom: 12px;">AIが生成したメッセージ</h3>
+          
+          <div class="message-preview">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <p style="font-weight: 500;">田中さくら様へ</p>
+              <span class="type-badge type-support">♥ サポート型</span>
+            </div>
+            <p style="color: #4b5563; line-height: 1.8; margin-bottom: 12px;">
+              田中様、いつもご利用ありがとうございます。前回のカラーから約2ヶ月が経ちましたが、髪の調子はいかがでしょうか？<br>
+              秋の乾燥が気になる季節になりましたので、トリートメントメニューを20%OFFでご用意しました。<br>
+              ゆったりとした時間で、髪も心もリフレッシュしませんか？ご予約お待ちしております。
+            </p>
+            <div style="background: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+              <p style="color: #0c4a6e; font-weight: 500;">🎫 特別クーポン: トリートメント20%OFF</p>
+              <p style="color: #64748b; font-size: 14px;">有効期限: 2025年9月30日まで</p>
+            </div>
+            <button class="btn" onclick="sendMessage('田中さくら')">このメッセージを送信</button>
+          </div>
+
+          <div class="message-preview">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <p style="font-weight: 500;">高橋陸様へ</p>
+              <span class="type-badge type-analytic">📊 分析型</span>
+            </div>
+            <p style="color: #4b5563; line-height: 1.8; margin-bottom: 12px;">
+              高橋様、いつもご利用ありがとうございます。<br>
+              前回のパーマから約2ヶ月が経過しました。パーマの持続期間は平均8-12週間ですが、髪質により個人差があります。<br>
+              現在、新しいデジタルパーマ技術を導入し、従来より30%長持ちすることが実証されています。<br>
+              詳しい説明とカウンセリングを含めた特別メニューをご用意しました。
+            </p>
+            <div style="background: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+              <p style="color: #0c4a6e; font-weight: 500;">🎫 特別クーポン: デジタルパーマ15%OFF + 無料カウンセリング</p>
+              <p style="color: #64748b; font-size: 14px;">有効期限: 2025年9月30日まで</p>
+            </div>
+            <button class="btn" onclick="sendMessage('高橋陸')">このメッセージを送信</button>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px;">
+          <button class="btn" style="background: #10b981;">一括送信する</button>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- JavaScript部分 -->
   <script>
-    // モックデータ定義
-    const customers = [
-      { 
-        id:"c1", name:"田中 さくら", type:"SUPPORT", 
-        last:"2025/08/10", cycle:5.0, 
-        tags:["ダメージケア","柔らかい印象"], phone:"090-1111-2222" 
-      },
-      { 
-        id:"c2", name:"佐藤 太郎", type:"CONTROL", 
-        last:"2025/08/22", cycle:4.0, 
-        tags:["時短","ビジネススタイル"], phone:"090-3333-4444" 
-      },
-      { 
-        id:"c3", name:"鈴木 花", type:"EXPRESS", 
-        last:"2025/08/28", cycle:6.0, 
-        tags:["SNS映え","トレンド"], phone:"080-5555-6666" 
-      },
-      { 
-        id:"c4", name:"高橋 陸", type:"ANALYTIC", 
-        last:"2025/07/30", cycle:8.0, 
-        tags:["根拠重視","色持ち"], phone:"070-7777-8888" 
-      },
-    ];
+    // グローバル変数
+    let currentQuestion = 1;
+    let answers = {};
+    let isRecording = false;
+    let recordingTimer = null;
+    let recordingSeconds = 0;
 
-    const typeMeta = {
-      CONTROL: { 
-        label:"コントロール型", cls:"type-ctrl", color:"#dc2626", icon:"⚡",
-        approach:"施術内容を明確に説明し時間を遵守",
-        avoid:["曖昧な説明","長い雑談","遅延"],
-        conv:['今日はどのようなスタイルにしますか？約1時間で仕上げますがよろしいでしょうか？']
-      },
-      EXPRESS: { 
-        label:"表現型", cls:"type-expr", color:"#f59e0b", icon:"⭐",
-        approach:"トレンド情報を提供し積極的に褒める",
-        avoid:["地味な提案","流行遅れ","褒めない"],
-        conv:['この色すごく素敵ですね！写真映えもバッチリです']
-      },
-      ANALYTIC: { 
-        label:"分析型", cls:"type-anal", color:"#2563eb", icon:"📊",
-        approach:"施術の仕組みと根拠を説明",
-        avoid:["根拠なし","感覚的説明","急かす"],
-        conv:['このカラー剤は○○成分が含まれており、持続性は約4週間です']
-      },
-      SUPPORT: { 
-        label:"サポート型", cls:"type-supp", color:"#059669", icon:"♥",
-        approach:"優しく丁寧に安心感を",
-        avoid:["急な変化","不安を煽る","冷たい対応"],
-        conv:['この色だと柔らかい印象になります。不安なことがあれば何でもどうぞ']
-      },
-    };
+    // ナビゲーション機能
+    document.addEventListener('DOMContentLoaded', function() {
+      // ナビゲーションアイテムにイベントリスナーを追加
+      const navItems = document.querySelectorAll('.nav-item');
+      navItems.forEach(item => {
+        item.addEventListener('click', function() {
+          const sectionName = this.getAttribute('data-section');
+          showSection(sectionName);
+        });
+      });
+    });
 
-    const today = [
-      { time:"10:00", name:"田中 さくら", type:"SUPPORT", menu:"カット/カラー", seat:"A1" },
-      { time:"11:30", name:"佐藤 太郎", type:"CONTROL", menu:"カット", seat:"B2" },
-      { time:"13:00", name:"鈴木 花", type:"EXPRESS", menu:"カラー", seat:"A2" },
-      { time:"15:00", name:"高橋 陸", type:"ANALYTIC", menu:"カット/トリートメント", seat:"C1" },
-    ];
-
-    // ルーター機能
-    const views = [...document.querySelectorAll("[data-view]")];
-    const navs = [...document.querySelectorAll(".navbtn")];
-    
-    function show(view) {
-      views.forEach(v => v.classList.toggle("hidden", v.dataset.view !== view));
-      navs.forEach(n => n.classList.toggle("active", n.dataset.route === view));
-      window.scrollTo({ top: 0, behavior: "smooth" });
+    function showSection(sectionName) {
+      // すべてのセクションを非表示
+      const sections = document.querySelectorAll('.section');
+      sections.forEach(section => {
+        section.classList.remove('active');
+      });
       
-      // ページ遷移時のフェードインアニメーション
-      const activeView = document.querySelector(`[data-view="${view}"]`);
-      if (activeView) {
-        activeView.classList.add("fade-in");
-        setTimeout(() => activeView.classList.remove("fade-in"), 300);
+      // 選択されたセクションを表示
+      const targetSection = document.getElementById(sectionName);
+      if (targetSection) {
+        targetSection.classList.add('active');
+      }
+      
+      // ナビゲーションのアクティブ状態を更新
+      const navItems = document.querySelectorAll('.nav-item');
+      navItems.forEach(item => {
+        item.classList.remove('active');
+        if (item.getAttribute('data-section') === sectionName) {
+          item.classList.add('active');
+        }
+      });
+    }
+
+    function goToDiagnosis() {
+      showSection('diagnosis');
+      resetDiagnosis();
+    }
+
+    // ソーシャルタイプ診断機能
+    function answerQuestion(questionNum, type) {
+      answers[questionNum] = type;
+      
+      if (questionNum < 3) {
+        // 次の質問へ
+        document.getElementById(`question-${questionNum}`).style.display = 'none';
+        document.getElementById(`question-${questionNum + 1}`).style.display = 'block';
+        currentQuestion = questionNum + 1;
+        
+        // プログレスバー更新
+        const progress = ((questionNum + 1) / 3) * 100;
+        document.getElementById('diagnosis-progress').style.width = progress + '%';
+        document.getElementById('question-number').textContent = questionNum + 1;
+      } else {
+        // 診断完了
+        showDiagnosisResult();
       }
     }
 
-    navs.forEach(n => n.addEventListener("click", () => show(n.dataset.route)));
-    [...document.querySelectorAll("[data-route-jump]")].forEach(b => 
-      b.addEventListener("click", () => show(b.dataset.routeJump))
-    );
+    function showDiagnosisResult() {
+      // 最も多く選ばれたタイプを判定
+      const typeCount = {};
+      Object.values(answers).forEach(type => {
+        typeCount[type] = (typeCount[type] || 0) + 1;
+      });
+      
+      let maxType = 'support';
+      let maxCount = 0;
+      for (const [type, count] of Object.entries(typeCount)) {
+        if (count > maxCount) {
+          maxType = type;
+          maxCount = count;
+        }
+      }
+      
+      // 結果を表示
+      document.getElementById('question-container').style.display = 'none';
+      document.getElementById('diagnosis-result').style.display = 'block';
+      
+      // タイプに応じた結果を設定
+      const typeData = {
+        control: {
+          icon: '⚡',
+          name: 'コントロール型',
+          description: '効率・結果重視のタイプ',
+          traits: [
+            '✓ 目的が明確',
+            '✓ 時間を重視',
+            '✓ 簡潔な会話を好む',
+            '✓ 迅速な決断'
+          ],
+          conversation: '「今日はどのようなスタイルにしますか？約1時間で仕上げますがよろしいでしょうか？」',
+          avoid: [
+            '• 曖昧な説明',
+            '• 長い雑談',
+            '• 時間の遅延'
+          ]
+        },
+        express: {
+          icon: '⭐',
+          name: '表現型',
+          description: '自己表現・トレンド重視のタイプ',
+          traits: [
+            '✓ トレンドに敏感',
+            '✓ 会話が好き',
+            '✓ SNSを活用',
+            '✓ 個性を重視'
+          ],
+          conversation: '「最近このインフルエンサーの髪型が流行っていて、○○さんにもとても似合いそうですね！」',
+          avoid: [
+            '• 地味な提案',
+            '• 流行遅れの情報',
+            '• 褒めない対応'
+          ]
+        },
+        analytic: {
+          icon: '📊',
+          name: '分析型',
+          description: '情報・根拠重視のタイプ',
+          traits: [
+            '✓ 慎重な決断',
+            '✓ 質問が多い',
+            '✓ 理論的思考',
+            '✓ 根拠を重視'
+          ],
+          conversation: '「このカラー剤は○○成分が含まれており、髪への負担が少ないです。持続性は約4週間ほどです」',
+          avoid: [
+            '• 根拠のない提案',
+            '• 感覚的な説明',
+            '• 急かす態度'
+          ]
+        },
+        support: {
+          icon: '♥',
+          name: 'サポート型',
+          description: '安心感・信頼重視のタイプ',
+          traits: [
+            '✓ 信頼関係を大切にする',
+            '✓ 急な変化を避ける傾向',
+            '✓ 優しい対応を好む',
+            '✓ 感情面への配慮を重視'
+          ],
+          conversation: '「この色だと柔らかい印象になりますよ。不安なことがあれば何でも仰ってくださいね」',
+          avoid: [
+            '• 急な変化を促す提案',
+            '• 不安を煽る言葉',
+            '• 冷たい対応'
+          ]
+        }
+      };
+      
+      const result = typeData[maxType];
+      document.getElementById('result-icon').textContent = result.icon;
+      document.getElementById('result-type').textContent = result.name;
+      document.getElementById('result-description').textContent = result.description;
+      document.getElementById('result-traits').innerHTML = result.traits.map(t => `<li>${t}</li>`).join('');
+      document.getElementById('result-conversation').textContent = result.conversation;
+      document.getElementById('result-avoid').innerHTML = result.avoid.map(a => `<li>${a}</li>`).join('');
+    }
 
-    // 初期表示
-    show("dashboard");
+    function resetDiagnosis() {
+      currentQuestion = 1;
+      answers = {};
+      document.getElementById('question-container').style.display = 'block';
+      document.getElementById('diagnosis-result').style.display = 'none';
+      document.querySelectorAll('.question-panel').forEach(panel => {
+        panel.style.display = 'none';
+      });
+      document.getElementById('question-1').style.display = 'block';
+      document.getElementById('diagnosis-progress').style.width = '33%';
+      document.getElementById('question-number').textContent = '1';
+    }
 
-    // 今日の予約リスト生成
-    const todayList = document.getElementById("todayList");
-    today.forEach(t => {
-      const meta = typeMeta[t.type];
-      const el = document.createElement("div");
-      el.className = "flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50 transition-colors slide-in";
-      el.innerHTML = `
-        <div>
-          <div class="font-semibold">${t.time} — ${t.name}</div>
-          <div class="text-sm text-gray-600">${t.menu} / 席 ${t.seat}</div>
-        </div>
-        <div class="flex items-center gap-2">
-          <span class="badge ${meta.cls}">${meta.icon} ${meta.label}</span>
-          <button class="text-xs text-blue-600 hover:underline" onclick="show('diagnosis')">診断</button>
-        </div>
-      `;
-      todayList.appendChild(el);
-    });
+    function saveDiagnosis() {
+      alert('✅ 診断結果をカルテに保存しました！');
+      showSection('dashboard');
+    }
 
-    // その他のインタラクティブ機能...
-    // （診断システム、録音機能、メッセージ作成等のJavaScriptコードが続く）
+    // 録音機能
+    function toggleRecording() {
+      const btn = document.getElementById('record-btn');
+      const status = document.getElementById('recording-status');
+      const wave = document.getElementById('recording-wave');
+      const analysis = document.getElementById('ai-analysis');
+      
+      if (!isRecording) {
+        // 録音開始
+        isRecording = true;
+        btn.textContent = '録音停止';
+        btn.classList.add('btn-danger');
+        status.style.display = 'none';
+        wave.style.display = 'block';
+        
+        // タイマー開始
+        recordingSeconds = 0;
+        recordingTimer = setInterval(() => {
+          recordingSeconds++;
+          const minutes = Math.floor(recordingSeconds / 60);
+          const seconds = recordingSeconds % 60;
+          document.getElementById('recording-time').textContent = 
+            `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }, 1000);
+      } else {
+        // 録音停止
+        isRecording = false;
+        btn.textContent = '録音開始';
+        btn.classList.remove('btn-danger');
+        wave.style.display = 'none';
+        analysis.style.display = 'block';
+        
+        // タイマー停止
+        clearInterval(recordingTimer);
+      }
+    }
 
+    function pauseRecording() {
+      if (isRecording) {
+        alert('🚿 シャンプー中のため録音を一時停止しました');
+      }
+    }
+
+    function saveToKarte() {
+      alert('✅ AI分析結果をカルテに保存しました！');
+      document.getElementById('recording-status').style.display = 'block';
+      document.getElementById('ai-analysis').style.display = 'none';
+    }
+
+    // 顧客管理機能
+    function searchCustomers(query) {
+      const cards = document.querySelectorAll('.customer-card');
+      cards.forEach(card => {
+        const name = card.querySelector('h3').textContent.toLowerCase();
+        if (name.includes(query.toLowerCase())) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function showCustomerDetail(name) {
+      alert(`${name}様の詳細画面を表示します（実装予定）`);
+    }
+
+    // メッセージ機能
+    function sendMessage(name) {
+      alert(`✉️ ${name}様へメッセージを送信しました！`);
+    }
   </script>
 </body>
 </html>
