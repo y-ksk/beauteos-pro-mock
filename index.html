@@ -47,6 +47,12 @@
     .btn-danger:hover {
       background: #dc2626;
     }
+    .btn-success {
+      background: #10b981;
+    }
+    .btn-success:hover {
+      background: #059669;
+    }
     .type-badge {
       display: inline-block;
       padding: 4px 12px;
@@ -145,7 +151,7 @@
       padding: 12px;
       border-bottom: 1px solid #f3f4f6;
     }
-    input[type="text"] {
+    input[type="text"], input[type="number"] {
       width: 100%;
       padding: 12px;
       border: 1px solid #e5e7eb;
@@ -163,6 +169,53 @@
       border-radius: 8px;
       padding: 16px;
       margin-bottom: 12px;
+    }
+    .camera-frame {
+      border: 3px dashed #3b82f6;
+      border-radius: 12px;
+      padding: 40px;
+      text-align: center;
+      background: #eff6ff;
+      position: relative;
+    }
+    .guide-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 200px;
+      height: 250px;
+      border: 2px solid #3b82f6;
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      pointer-events: none;
+    }
+    .competitor-card {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .price-comparison {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .price-diff {
+      font-size: 12px;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .price-higher { background: #fee2e2; color: #dc2626; }
+    .price-lower { background: #d1fae5; color: #059669; }
+    .conversation-tag {
+      display: inline-block;
+      background: #f3e8ff;
+      color: #6b21a8;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      margin: 2px;
     }
   </style>
 </head>
@@ -190,6 +243,8 @@
         <div class="nav-item" data-section="recording">🎤 録音・カルテ化</div>
         <div class="nav-item" data-section="customers">👥 顧客管理</div>
         <div class="nav-item" data-section="messages">💬 メッセージ</div>
+        <div class="nav-item" data-section="photo">📸 撮影補助</div>
+        <div class="nav-item" data-section="competitor">🏆 競合分析</div>
       </div>
     </div>
 
@@ -282,7 +337,7 @@
           <p style="color: #1e40af;">📈 表現型顧客の再来率が87%と高水準。SNS投稿をさらに強化しましょう。</p>
         </div>
         <div style="background: #d1fae5; border-radius: 8px; padding: 16px;">
-          <p style="color: #064e3b;">🎯 来週の天候不良予報。平日限定クーポンの配信を検討してください。</p>
+          <p style="color: #064e3b;">🎯 競合店が今週カラー20%OFFを実施中。トリートメント無料の差別化を推奨。</p>
         </div>
       </div>
     </div>
@@ -470,6 +525,11 @@
                   <span class="type-badge type-support">♥ サポート型</span>
                   <span style="background: #fee2e2; color: #dc2626; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-left: 8px;">要フォロー</span>
                 </div>
+                <div style="margin-top: 8px;">
+                  <span class="conversation-tag">娘の結婚式</span>
+                  <span class="conversation-tag">白髪が気になる</span>
+                  <span class="conversation-tag">自然な仕上がり希望</span>
+                </div>
               </div>
               <button class="btn" onclick="showCustomerDetail('田中さくら')">詳細</button>
             </div>
@@ -484,6 +544,11 @@
                 <div style="margin-top: 8px;">
                   <span class="type-badge type-control">⚡ コントロール型</span>
                 </div>
+                <div style="margin-top: 8px;">
+                  <span class="conversation-tag">仕事が忙しい</span>
+                  <span class="conversation-tag">時間厳守</span>
+                  <span class="conversation-tag">ビジネススタイル</span>
+                </div>
               </div>
               <button class="btn" onclick="showCustomerDetail('佐藤太郎')">詳細</button>
             </div>
@@ -497,6 +562,11 @@
                 <p style="color: #6b7280; font-size: 14px;">📱 080-5555-6666</p>
                 <div style="margin-top: 8px;">
                   <span class="type-badge type-express">⭐ 表現型</span>
+                </div>
+                <div style="margin-top: 8px;">
+                  <span class="conversation-tag">韓国アイドル好き</span>
+                  <span class="conversation-tag">インスタ映え重視</span>
+                  <span class="conversation-tag">新色に挑戦したい</span>
                 </div>
               </div>
               <button class="btn" onclick="showCustomerDetail('鈴木花')">詳細</button>
@@ -513,6 +583,11 @@
                   <span class="type-badge type-analytic">📊 分析型</span>
                   <span style="background: #fef3c7; color: #f59e0b; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-left: 8px;">失客リスク</span>
                 </div>
+                <div style="margin-top: 8px;">
+                  <span class="conversation-tag">成分にこだわる</span>
+                  <span class="conversation-tag">アレルギー体質</span>
+                  <span class="conversation-tag">詳しい説明希望</span>
+                </div>
               </div>
               <button class="btn" onclick="showCustomerDetail('高橋陸')">詳細</button>
             </div>
@@ -521,7 +596,7 @@
       </div>
     </div>
 
-    <!-- メッセージセクション -->
+    <!-- メッセージセクション（改良版） -->
     <div id="messages" class="section">
       <div class="card fade-in">
         <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 20px;">💬 メッセージ・クーポン配信</h2>
@@ -531,46 +606,307 @@
         </div>
 
         <div style="margin-bottom: 20px;">
-          <h3 style="font-weight: 600; margin-bottom: 12px;">AIが生成したメッセージ</h3>
+          <h3 style="font-weight: 600; margin-bottom: 12px;">AIが生成した個別メッセージ</h3>
           
+          <!-- 田中さくら様へのメッセージ -->
           <div class="message-preview">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
               <p style="font-weight: 500;">田中さくら様へ</p>
               <span class="type-badge type-support">♥ サポート型</span>
             </div>
+            <div style="background: #f3e8ff; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+              <p style="font-size: 12px; color: #6b21a8; margin-bottom: 4px;">📝 前回の会話内容から：</p>
+              <p style="font-size: 14px; color: #4b5563;">「娘さんの結婚式が11月」「白髪を自然にカバーしたい」「髪に優しい施術希望」</p>
+            </div>
             <p style="color: #4b5563; line-height: 1.8; margin-bottom: 12px;">
-              田中様、いつもご利用ありがとうございます。前回のカラーから約2ヶ月が経ちましたが、髪の調子はいかがでしょうか？<br>
-              秋の乾燥が気になる季節になりましたので、トリートメントメニューを20%OFFでご用意しました。<br>
-              ゆったりとした時間で、髪も心もリフレッシュしませんか？ご予約お待ちしております。
+              田中様、いつもありがとうございます😊<br>
+              前回お話しいただいた娘さんの結婚式まであと2ヶ月ですね。大切な日に向けて、白髪を自然にカバーしながら、上品な艶のある仕上がりにする特別メニューをご用意しました。<br><br>
+              田中様がお気にされていた「髪へのダメージ」も最小限に抑える、オーガニック成分90%のカラー剤を新しく導入しました。いつものように、ゆったりとした時間で丁寧に施術させていただきますので、ご安心くださいね。
             </p>
             <div style="background: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
-              <p style="color: #0c4a6e; font-weight: 500;">🎫 特別クーポン: トリートメント20%OFF</p>
-              <p style="color: #64748b; font-size: 14px;">有効期限: 2025年9月30日まで</p>
+              <p style="color: #0c4a6e; font-weight: 500;">🎫 特別クーポン: 結婚式応援プラン</p>
+              <p style="color: #075985;">オーガニックカラー + 艶出しトリートメント 30%OFF</p>
+              <p style="color: #64748b; font-size: 14px;">有効期限: 2025年10月31日まで</p>
             </div>
             <button class="btn" onclick="sendMessage('田中さくら')">このメッセージを送信</button>
           </div>
 
+          <!-- 佐藤太郎様へのメッセージ -->
+          <div class="message-preview">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <p style="font-weight: 500;">佐藤太郎様へ</p>
+              <span class="type-badge type-control">⚡ コントロール型</span>
+            </div>
+            <div style="background: #f3e8ff; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+              <p style="font-size: 12px; color: #6b21a8; margin-bottom: 4px;">📝 前回の会話内容から：</p>
+              <p style="font-size: 14px; color: #4b5563;">「仕事が忙しい」「時間厳守希望」「清潔感重視」</p>
+            </div>
+            <p style="color: #4b5563; line-height: 1.8; margin-bottom: 12px;">
+              佐藤様<br>
+              前回から約1ヶ月経過しました。<br>
+              【所要時間：30分】でカット可能な早朝枠（8:00〜）を新設しました。<br>
+              出社前にご利用いただけます。
+            </p>
+            <div style="background: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+              <p style="color: #0c4a6e; font-weight: 500;">🎫 ビジネスマン応援クーポン</p>
+              <p style="color: #075985;">早朝カット 20%OFF（8:00-9:00限定）</p>
+              <p style="color: #64748b; font-size: 14px;">有効期限: 2025年9月30日まで</p>
+            </div>
+            <button class="btn" onclick="sendMessage('佐藤太郎')">このメッセージを送信</button>
+          </div>
+
+          <!-- 鈴木花様へのメッセージ -->
+          <div class="message-preview">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <p style="font-weight: 500;">鈴木花様へ</p>
+              <span class="type-badge type-express">⭐ 表現型</span>
+            </div>
+            <div style="background: #f3e8ff; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+              <p style="font-size: 12px; color: #6b21a8; margin-bottom: 4px;">📝 前回の会話内容から：</p>
+              <p style="font-size: 14px; color: #4b5563;">「韓国アイドルが好き」「NewJeansのヘインちゃん推し」「インスタ映え重視」</p>
+            </div>
+            <p style="color: #4b5563; line-height: 1.8; margin-bottom: 12px;">
+              花ちゃん〜！！元気にしてる？？💕<br>
+              前回話してたNewJeansのヘインちゃんの新しいヘアカラー見た！？<br>
+              あのピンクベージュ、めちゃくちゃ可愛くない！？😍<br><br>
+              実は同じカラー剤入荷したから、花ちゃんも挑戦してみない？<br>
+              インスタ映え間違いなしだよ〜📸✨<br>
+              施術後の撮影もお手伝いするから、バズる写真撮ろう！
+            </p>
+            <div style="background: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+              <p style="color: #0c4a6e; font-weight: 500;">🎫 K-POPアイドルカラー特別クーポン</p>
+              <p style="color: #075985;">トレンドカラー + 撮影サポート付き 25%OFF</p>
+              <p style="color: #64748b; font-size: 14px;">有効期限: 2025年9月30日まで</p>
+            </div>
+            <button class="btn" onclick="sendMessage('鈴木花')">このメッセージを送信</button>
+          </div>
+
+          <!-- 高橋陸様へのメッセージ -->
           <div class="message-preview">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
               <p style="font-weight: 500;">高橋陸様へ</p>
               <span class="type-badge type-analytic">📊 分析型</span>
             </div>
+            <div style="background: #f3e8ff; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+              <p style="font-size: 12px; color: #6b21a8; margin-bottom: 4px;">📝 前回の会話内容から：</p>
+              <p style="font-size: 14px; color: #4b5563;">「成分にこだわる」「アレルギー体質」「パッチテスト希望」「詳しい説明を求める」</p>
+            </div>
             <p style="color: #4b5563; line-height: 1.8; margin-bottom: 12px;">
-              高橋様、いつもご利用ありがとうございます。<br>
-              前回のパーマから約2ヶ月が経過しました。パーマの持続期間は平均8-12週間ですが、髪質により個人差があります。<br>
-              現在、新しいデジタルパーマ技術を導入し、従来より30%長持ちすることが実証されています。<br>
-              詳しい説明とカウンセリングを含めた特別メニューをご用意しました。
+              高橋様<br><br>
+              前回ご相談いただいたアレルギー対応について、新しい情報があります。<br><br>
+              【新導入】医療機関共同開発のアレルギーテスト済みパーマ液<br>
+              ・パッチテスト実施率：100%（n=500）<br>
+              ・アレルギー反応率：0.02%（従来品：0.8%）<br>
+              ・主成分：システアミン（従来のチオグリコール酸不使用）<br>
+              ・pH値：6.8-7.2（弱酸性域）<br><br>
+              詳しい成分表と臨床データをご用意しています。事前カウンセリング（無料）も可能です。
             </p>
             <div style="background: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
-              <p style="color: #0c4a6e; font-weight: 500;">🎫 特別クーポン: デジタルパーマ15%OFF + 無料カウンセリング</p>
-              <p style="color: #64748b; font-size: 14px;">有効期限: 2025年9月30日まで</p>
+              <p style="color: #0c4a6e; font-weight: 500;">🎫 アレルギー対応特別メニュー</p>
+              <p style="color: #075985;">パッチテスト + カウンセリング + 低刺激パーマ 15%OFF</p>
+              <p style="color: #64748b; font-size: 14px;">有効期限: 2025年10月31日まで</p>
             </div>
             <button class="btn" onclick="sendMessage('高橋陸')">このメッセージを送信</button>
           </div>
         </div>
 
         <div style="text-align: center; margin-top: 20px;">
-          <button class="btn" style="background: #10b981;">一括送信する</button>
+          <button class="btn btn-success">一括送信する（23名）</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 撮影補助セクション（新規追加） -->
+    <div id="photo" class="section">
+      <div class="card fade-in">
+        <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 20px;">📸 施術写真撮影補助</h2>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+          <div>
+            <h3 style="font-weight: 600; margin-bottom: 12px;">撮影ガイド</h3>
+            <div class="camera-frame">
+              <div class="guide-overlay"></div>
+              <p style="color: #3b82f6; margin-top: 100px;">顔の輪郭をガイドに合わせてください</p>
+              <div style="margin-top: 20px;">
+                <button class="btn" onclick="capturePhoto()">📸 撮影</button>
+              </div>
+            </div>
+            
+            <div style="margin-top: 20px;">
+              <h4 style="font-weight: 600; margin-bottom: 8px;">撮影のポイント</h4>
+              <ul style="color: #4b5563; font-size: 14px; line-height: 1.8;">
+                <li>✓ 自然光または明るい照明下で撮影</li>
+                <li>✓ 顔の角度は正面から15度が理想的</li>
+                <li>✓ 髪全体が見えるように撮影</li>
+                <li>✓ 背景はシンプルに</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div>
+            <h3 style="font-weight: 600; margin-bottom: 12px;">AI自動補正</h3>
+            <div style="background: #f9fafb; border-radius: 8px; padding: 16px;">
+              <h4 style="font-weight: 600; margin-bottom: 12px;">補正項目</h4>
+              <div style="margin-bottom: 12px;">
+                <label style="display: flex; align-items: center; margin-bottom: 8px;">
+                  <input type="checkbox" checked style="margin-right: 8px;">
+                  明るさ自動調整
+                </label>
+                <label style="display: flex; align-items: center; margin-bottom: 8px;">
+                  <input type="checkbox" checked style="margin-right: 8px;">
+                  肌色補正
+                </label>
+                <label style="display: flex; align-items: center; margin-bottom: 8px;">
+                  <input type="checkbox" checked style="margin-right: 8px;">
+                  髪の艶感強調
+                </label>
+                <label style="display: flex; align-items: center; margin-bottom: 8px;">
+                  <input type="checkbox" checked style="margin-right: 8px;">
+                  背景ぼかし
+                </label>
+                <label style="display: flex; align-items: center; margin-bottom: 8px;">
+                  <input type="checkbox" style="margin-right: 8px;">
+                  美肌加工（軽め）
+                </label>
+              </div>
+              
+              <h4 style="font-weight: 600; margin-bottom: 12px;">SNS投稿用キャプション</h4>
+              <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+                <p style="color: #4b5563; font-size: 14px; line-height: 1.6;">
+                  ✨秋のトレンドカラー「ピンクベージュ」✨<br>
+                  透明感のある仕上がりで、柔らかい印象に💕<br><br>
+                  #恵比寿美容室 #ピンクベージュ #秋カラー #透明感カラー #イルミナカラー
+                </p>
+              </div>
+              
+              <button class="btn" style="width: 100%;">AI補正を適用</button>
+            </div>
+            
+            <div style="margin-top: 20px; background: #ecfdf5; border-radius: 8px; padding: 16px;">
+              <p style="color: #065f46; font-weight: 600; margin-bottom: 8px;">💡 撮影のコツ</p>
+              <p style="color: #064e3b; font-size: 14px;">
+                お客様に「インスタ用に撮影しましょうか？」と声をかけると、90%以上の方が喜んで承諾されます。撮影後すぐにAirDropで共有すると満足度が向上します。
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 競合分析セクション（新規追加） -->
+    <div id="competitor" class="section">
+      <div class="card fade-in">
+        <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 20px;">🏆 競合分析・差別化戦略</h2>
+        
+        <div style="background: #fef3c7; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+          <p style="color: #92400e; font-weight: 600;">📊 エリア内5店舗の最新動向を分析しました（2025年9月3日更新）</p>
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+          <h3 style="font-weight: 600; margin-bottom: 12px;">近隣サロン価格比較</h3>
+          
+          <div class="competitor-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h4 style="font-weight: 600;">Hair Salon A（徒歩3分）</h4>
+              <span style="background: #fee2e2; color: #dc2626; padding: 4px 12px; border-radius: 20px; font-size: 14px;">強力競合</span>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+              <div>
+                <p style="color: #6b7280; font-size: 14px;">カット</p>
+                <div class="price-comparison">
+                  <span style="font-weight: 600;">¥4,500</span>
+                  <span class="price-diff price-lower">-¥500</span>
+                </div>
+              </div>
+              <div>
+                <p style="color: #6b7280; font-size: 14px;">カラー</p>
+                <div class="price-comparison">
+                  <span style="font-weight: 600;">¥7,000</span>
+                  <span class="price-diff price-lower">-¥1,000</span>
+                </div>
+              </div>
+              <div>
+                <p style="color: #6b7280; font-size: 14px;">パーマ</p>
+                <div class="price-comparison">
+                  <span style="font-weight: 600;">¥9,000</span>
+                  <span class="price-diff price-higher">+¥500</span>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top: 12px;">
+              <p style="color: #6b7280; font-size: 14px;">現在のキャンペーン：</p>
+              <p style="color: #dc2626; font-weight: 500;">「新規限定カラー20%OFF（〜9/30）」</p>
+            </div>
+          </div>
+          
+          <div class="competitor-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h4 style="font-weight: 600;">Beauty Studio B（徒歩5分）</h4>
+              <span style="background: #fef3c7; color: #f59e0b; padding: 4px 12px; border-radius: 20px; font-size: 14px;">要注意</span>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+              <div>
+                <p style="color: #6b7280; font-size: 14px;">カット</p>
+                <div class="price-comparison">
+                  <span style="font-weight: 600;">¥5,500</span>
+                  <span class="price-diff price-higher">+¥500</span>
+                </div>
+              </div>
+              <div>
+                <p style="color: #6b7280; font-size: 14px;">カラー</p>
+                <div class="price-comparison">
+                  <span style="font-weight: 600;">¥8,500</span>
+                  <span class="price-diff price-higher">+¥500</span>
+                </div>
+              </div>
+              <div>
+                <p style="color: #6b7280; font-size: 14px;">パーマ</p>
+                <div class="price-comparison">
+                  <span style="font-weight: 600;">¥8,000</span>
+                  <span class="price-diff price-lower">-¥500</span>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top: 12px;">
+              <p style="color: #6b7280; font-size: 14px;">現在のキャンペーン：</p>
+              <p style="color: #f59e0b; font-weight: 500;">「平日限定トリートメント無料」</p>
+            </div>
+          </div>
+        </div>
+        
+        <div style="background: #ecfdf5; border-radius: 8px; padding: 20px;">
+          <h3 style="font-weight: 600; margin-bottom: 12px;">🎯 AI提案：差別化戦略</h3>
+          
+          <div style="margin-bottom: 16px;">
+            <h4 style="color: #065f46; font-weight: 600; margin-bottom: 8px;">1. 価格戦略</h4>
+            <p style="color: #064e3b; font-size: 14px; line-height: 1.6;">
+              競合A店がカラー20%OFFを実施中のため、価格競争は避けるべきです。<br>
+              代わりに「カラー＋トリートメント＋ホームケアセット」のバンドル販売を推奨。<br>
+              トータル価値で差別化し、客単価向上を狙います。
+            </p>
+          </div>
+          
+          <div style="margin-bottom: 16px;">
+            <h4 style="color: #065f46; font-weight: 600; margin-bottom: 8px;">2. サービス差別化</h4>
+            <p style="color: #064e3b; font-size: 14px; line-height: 1.6;">
+              ソーシャルタイプ診断を前面に出した「パーソナライズ接客」をPR。<br>
+              「あなたに合わせた接客スタイル」として、他店にない価値を訴求。<br>
+              特に分析型・サポート型顧客には強力な差別化要因になります。
+            </p>
+          </div>
+          
+          <div style="margin-bottom: 16px;">
+            <h4 style="color: #065f46; font-weight: 600; margin-bottom: 8px;">3. 時間帯別戦略</h4>
+            <p style="color: #064e3b; font-size: 14px; line-height: 1.6;">
+              競合店が手薄な早朝（8:00-10:00）と夜間（19:00-21:00）を強化。<br>
+              「朝活ビューティー」「アフター6美容」として、働く人向けにPR。<br>
+              この時間帯限定で10%OFFを実施し、新規顧客を獲得。
+            </p>
+          </div>
+          
+          <div style="text-align: center; margin-top: 20px;">
+            <button class="btn btn-success">この戦略でキャンペーンを作成</button>
+          </div>
         </div>
       </div>
     </div>
@@ -832,6 +1168,14 @@
     // メッセージ機能
     function sendMessage(name) {
       alert(`✉️ ${name}様へメッセージを送信しました！`);
+    }
+
+    // 撮影機能
+    function capturePhoto() {
+      alert('📸 撮影しました！AI補正処理を開始します...');
+      setTimeout(() => {
+        alert('✨ AI補正が完了しました！SNS投稿用の画像が準備できました。');
+      }, 2000);
     }
   </script>
 </body>
